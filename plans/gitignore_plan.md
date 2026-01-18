@@ -1,0 +1,101 @@
+# Gitignore Configuration
+
+Содержимое для `.gitignore`:
+
+```gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+ENV/
+env/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+*.log.*
+logs/
+.mnemosyne/logs/
+
+# Database (contains sensitive data)
+*.db
+*.db-wal
+*.db-shm
+.mnemosyne/*.db
+
+# Screenshots (contains sensitive data)
+screenshots/
+.mnemosyne/screenshots/
+
+# Config (may contain secrets)
+config/brain.yaml
+config/watcher.yaml
+.env
+
+# Models (large files)
+models/
+*.bin
+*.safetensors
+*.gguf
+*.onnx
+
+# Training Data
+training/
+dataset/
+Mnemosyne/Training/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS
+Thumbs.db
+desktop.ini
+```
+
+**Категории исключений:**
+- **Python:** `__pycache__`, `venv/`, `*.egg` - Python артефакты
+- **Go:** `*.exe`, `*.out` - Go бинарники и тестовые файлы
+- **IDE:** `.vscode/`, `.idea/` - настройки редакторов
+- **Logs:** `*.log`, `logs/` - файлы логов
+- **Database:** `*.db`, `*.db-wal` - SQLite файлы (чувствительные данные)
+- **Screenshots:** `screenshots/` - скриншоты (чувствительные данные)
+- **Config:** `.env`, `config/*.yaml` - конфиги с секретами
+- **Models:** `*.bin`, `*.safetensors` - большие файлы моделей
+- **Training:** `training/`, `dataset/` - обучающие данные

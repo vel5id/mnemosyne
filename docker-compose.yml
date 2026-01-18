@@ -1,0 +1,232 @@
+# ============================================================
+# Mnemosyne Core V3.0 - Docker Compose Configuration
+# ============================================================
+#
+# Architecture:
+#   - watcher (Go):    Collects activity metadata at 5Hz (runs natively)
+#   - brain (Python):  Analyzes data using AI models
+#   - dashboard:       Status monitoring web UI
+#   - ollama-vlm:      Vision Language Model container
+#   - ollama-llm:      Reasoning LLM container
+#
+# Data Flow:
+#   watcher → SQLite (WAL mode) ← brain → Obsidian
+#                                   ↓
+#                           ollama-vlm / ollama-llm
+#                                   ↓
+#                              dashboard (monitoring)
+#
+# ============================================================
+
+services:
+  # ===========================================================
+  # Database - SQLite Container
+  # ===========================================================
+  db:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.db
+    container_name: mnemosyne-db
+    volumes:
+      - ./.mnemosyne:/data
+    environment:
+      - MNEMOSYNE_DB_PATH=/data/activity.db
+    networks:
+      - mnemosyne_network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "sqlite3", "/data/activity.db", "SELECT 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # ===========================================================
+  # Cache + VectorDB - Redis Stack (Phase 8: Graph RAG)
+  # Provides: Streams, VectorStore, DocStore, RedisInsight UI
+  # ===========================================================
+  redis:
+    image: redis/redis-stack:latest
+    container_name: mnemosyne-redis
+    ports:
+      - "6379:6379" # Redis API
+      - "8001:8001" # RedisInsight Web UI
+    volumes:
+      - redis_data:/data
+    environment:
+      - REDIS_ARGS=--appendonly yes --appendfsync everysec
+    networks:
+      - mnemosyne_network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ===========================================================
+  # Tier 2: Brain (Python) - Cognitive Layer
+  # ===========================================================
+  brain:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.brain
+    container_name: mnemosyne-brain
+    volumes:
+      - ./.mnemosyne:/app/.mnemosyne
+      - ./.mnemosyne/screenshots:/app/.mnemosyne/screenshots
+      - ${OBSIDIAN_VAULT_PATH:-./obsidian_export}:/app/obsidian
+    environment:
+      - MNEMOSYNE_DB_PATH=/app/.mnemosyne/activity.db
+      - OBSIDIAN_VAULT_PATH=/app/obsidian
+      - BATCH_SIZE=${BATCH_SIZE:-100}
+      - POLL_INTERVAL_SECONDS=${POLL_INTERVAL_SECONDS:-5}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      # Model configuration
+      - VLM_BACKEND=${VLM_BACKEND:-ollama}
+      - VLM_MODEL=${VLM_MODEL:-minicpm-v}
+      - OLLAMA_VLM_HOST=http://ollama-vlm:11434
+      - OLLAMA_LLM_HOST=http://ollama-llm:11434
+      - LLM_MODEL_HEAVY=${LLM_MODEL_HEAVY:-deepseek-r1:1.5b}
+      - LLM_MODEL_LIGHT=${LLM_MODEL_LIGHT:-phi3:mini}
+    depends_on:
+      db:
+        condition: service_healthy
+      ollama-vlm:
+        condition: service_started
+      ollama-llm:
+        condition: service_started
+    networks:
+      - mnemosyne_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import core.dal.sqlite_provider; print('OK')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ===========================================================
+  # Dashboard - Status Monitoring Web UI
+  # ===========================================================
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dashboard
+    container_name: mnemosyne-dashboard
+    volumes:
+      - ./.mnemosyne:/app/.mnemosyne:ro
+    environment:
+      - MNEMOSYNE_DB_PATH=/app/.mnemosyne/activity.db
+      - MNEMOSYNE_REDIS_HOST=redis
+      - OLLAMA_VLM_HOST=http://ollama-vlm:11434
+      - OLLAMA_LLM_HOST=http://ollama-llm:11434
+      - VLM_MODEL=${VLM_MODEL:-minicpm-v}
+      - LLM_MODEL_HEAVY=${LLM_MODEL_HEAVY:-deepseek-r1:1.5b}
+      - LLM_MODEL_LIGHT=${LLM_MODEL_LIGHT:-phi3:mini}
+    ports:
+      - "11433:8765"
+    networks:
+      - mnemosyne_network
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8765/api/health').raise_for_status()" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # ===========================================================
+  # Ollama VLM - Vision Language Models
+  # Models: minicpm-v, qwen2.5-vl:7b
+  # ===========================================================
+  ollama-vlm:
+    image: ollama/ollama:latest
+    container_name: mnemosyne-ollama-vlm
+    volumes:
+      - ollama_vlm_models:/root/.ollama
+      - ./docker/entrypoint_vlm.sh:/entrypoint.sh
+    entrypoint: [ "/bin/bash", "/entrypoint.sh" ]
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_ORIGINS=*
+      - VLM_MODEL=${VLM_MODEL:-minicpm-v}
+    ports:
+      - "11434:11434"
+    networks:
+      - mnemosyne_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:11434/api/tags" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+  # ===========================================================
+  # Ollama LLM - Reasoning Models
+  # Models: deepseek-r1:1.5b (heavy), phi3:mini (light)
+  # ===========================================================
+  ollama-llm:
+    image: ollama/ollama:latest
+    container_name: mnemosyne-ollama-llm
+    volumes:
+      - ollama_llm_models:/root/.ollama
+      - ./docker/entrypoint_llm.sh:/entrypoint.sh
+    entrypoint: [ "/bin/bash", "/entrypoint.sh" ]
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_ORIGINS=*
+      - LLM_MODEL_HEAVY=${LLM_MODEL_HEAVY:-deepseek-r1:1.5b}
+      - LLM_MODEL_LIGHT=${LLM_MODEL_LIGHT:-phi3:mini}
+    ports:
+      - "11435:11434"
+    networks:
+      - mnemosyne_network
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:11434/api/tags" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+# ===========================================================
+# Volumes
+# ===========================================================
+volumes:
+  ollama_vlm_models:
+  ollama_llm_models:
+  redis_data:
+
+    # ===========================================================
+    # Networks
+    # ===========================================================
+networks:
+  mnemosyne_network:
+    driver: bridge
+    internal: false
