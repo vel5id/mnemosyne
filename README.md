@@ -7,263 +7,359 @@
 <p align="center">
   <strong>🧠 Local Digital Twin — Enterprise-grade personal analytics with complete data privacy</strong>
 </p>
+<p align="center">
+  <strong>🧠 Локальный Цифровой Двойник — Персональная аналитика корпоративного уровня с полной приватностью</strong>
+</p>
 
 <p align="center">
-  <a href="#features">Features</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#quick-start">Quick Start</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#roadmap">Roadmap</a>
+  <a href="#english"><strong>English</strong></a> | <a href="#russian"><strong>Русский</strong></a>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Go-1.25-00ADD8?style=flat&logo=go" alt="Go"/>
   <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python" alt="Python"/>
+  <img src="https://img.shields.io/badge/Redis-Stack-DC382D?style=flat&logo=redis" alt="Redis"/>
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker" alt="Docker"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat" alt="License"/>
 </p>
 
 ---
 
-## What is Mnemosyne?
+<div id="english"></div>
 
-Mnemosyne is an **autonomous activity tracking system** that captures, analyzes, and visualizes your digital workflow — completely offline and private. 
+# 🇬🇧 English Documentation
 
-Think of it as a **local Rewind.ai** but with Graph RAG, semantic search, and Obsidian integration.
+## 📖 Overview
 
-### Key Differentiators
+**Mnemosyne** is an autonomous activity tracking system designed to be your **Local Digital Twin**. It captures, analyzes, and visualizes your entire digital workflow without sending a single byte to the cloud.
 
-| Feature | Mnemosyne | Cloud Alternatives |
-|---------|-----------|-------------------|
-| **Data Location** | 100% Local | Cloud servers |
-| **AI Processing** | Local LLM (Ollama) | API calls |
-| **Privacy** | Air-gap ready | PII concerns |
-| **Cost** | Free forever | Subscription |
-| **Customization** | Full source access | Limited |
+Think of it as a self-hosted **Rewind.ai**, but supercharged with **Graph RAG** (Retrieval-Augmented Generation), semantic search, and deep integration with **Obsidian**. It turns your raw activity logs into a queryable knowledge graph.
 
----
+### Why Mnemosyne?
 
-## Features
-
-### 🎯 Core Capabilities
-
-- **High-Frequency Capture** — 5Hz activity monitoring via Win32 API
-- **AI-Powered Analysis** — Local VLM (MiniCPM-V) + LLM (DeepSeek R1) for intent inference
-- **Session Aggregation** — Automatic grouping of activities into meaningful sessions
-- **Graph RAG** — Semantic search across your entire activity history
-- **Obsidian Integration** — WikiLinks, tags, and Daily Notes export
-
-### 🔐 Privacy First
-
-- **Air-Gap Architecture** — Zero cloud dependencies
-- **PII Sanitization** — Automatic redaction of emails, IPs, API keys
-- **Local LLMs** — All AI runs on your GPU via Ollama
-
-### ⚡ Performance
-
-- **Go Watcher**: <0.1% CPU, <20MB RAM
-- **Write-Behind Pattern**: Redis buffer protects SSD from write amplification
-- **VRAM Guard**: Dynamic model loading based on available GPU memory
+| Feature | Mnemosyne Core | Cloud Trackers (RescueTime, Rewind) |
+|---------|----------------|-------------------------------------|
+| **Data Sovereignty** | **100% Local (Air-Gapped)** | Cloud Servers (Privacy Risk) |
+| **Intelligence** | **Local LLM (DeepSeek/Llama)** | Black-box Proprietary AI |
+| **Search** | **Graph RAG + Semantic** | Keyword / Simple Metadata |
+| **Cost** | **Free (Open Source)** | Monthly Subscription |
+| **Extensibility** | **Python/Go Source Code** | Closed Ecosystem |
 
 ---
 
-## Architecture
+## ✨ Key Features
 
+### 1. High-Fidelity Capture (The Watcher)
+- **5Hz Polling**: Captures window title, process name, and input intensity every 200ms.
+- **Efficient**: Written in Go (Win32 API), consumes <0.1% CPU and <20MB RAM.
+- **Smart Idling**: Automatically detects AFK and game modes to pause logging.
+
+### 2. Cognitive Brain (The AI)
+- **Local VLM**: Uses `MiniCPM-V` to visually analyze screenshots (OCR + Scene Description).
+- **Intent Inference**: Uses `DeepSeek R1` to determine *what* you are doing (e.g., "Debugging Redis Cluster").
+- **Session Aggregation**: Groups raw ticks into meaningful sessions (e.g., "Coding Session: 45 mins").
+
+### 3. Graph RAG (The Memory)
+- **Vector Search**: Embeds every session description using `nomic-embed-text` into **Redis Stack**.
+- **Knowledge Graph**: Builds a topological graph of your activities using **NetworkX**.
+- **Queryable**: Ask natural language questions like *"What was I debugging last Friday?"*.
+
+### 4. Enterprise-Grade Architecture
+- **Write-Behind Pattern**: Redis acts as a high-speed buffer to protect your SSD from write amplification.
+- **Async Processing**: Python workers process data in batches.
+- **Maintenance**: Automated VACUUM and pruning scripts.
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    subgraph "Tier 1: Capture (Go)"
+        Watcher[Watcher.exe] -->|5Hz Pushes| RedisStream[Redis Stream]
+    end
+
+    subgraph "Tier 2: Ingestion (Redis Stack)"
+        RedisStream -->|Buffer| RedisRAM[RAM Buffer]
+        RedisRAM -->|Persist| VectorStore[Vector Search]
+    end
+
+    subgraph "Tier 3: Cognition (Python)"
+        Brain[Brain Engine] -->|Pull Batch| RedisRAM
+        Brain -->|Inference| Ollama[Ollama LLM/VLM]
+        Brain -->|Index| VectorStore
+        Brain -->|Graph| NetworkX[Knowledge Graph]
+    end
+
+    subgraph "Tier 4: Storage"
+        Brain -->|Archive| SQLite[SQLite WAL]
+        NetworkX -->|Save| JSON[Knowledge Graph File]
+    end
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        MNEMOSYNE CORE V5.0                          │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│   ┌─────────────┐    ┌─────────────────────────────────────────┐   │
-│   │   WATCHER   │    │              REDIS STACK                │   │
-│   │    (Go)     │───>│  ┌────────┐ ┌────────┐ ┌────────────┐  │   │
-│   │   5Hz Poll  │    │  │ Stream │ │ Vector │ │  DocStore  │  │   │
-│   └─────────────┘    │  │ Buffer │ │ Store  │ │            │  │   │
-│                      │  └────────┘ └────────┘ └────────────┘  │   │
-│                      └──────────────────┬──────────────────────┘   │
-│                                         │                          │
-│   ┌─────────────────────────────────────▼──────────────────────┐   │
-│   │                         BRAIN (Python)                      │   │
-│   │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐   │   │
-│   │  │ Session  │ │  Intent  │ │  Graph   │ │   LlamaIndex │   │   │
-│   │  │ Tracker  │ │ Inference│ │   RAG    │ │  VectorStore │   │   │
-│   │  └──────────┘ └──────────┘ └──────────┘ └──────────────┘   │   │
-│   └──────────────────────────────────────────────────────────────┘   │
-│                                         │                          │
-│   ┌─────────────┐    ┌─────────────┐    ▼                          │
-│   │   OLLAMA    │    │   SQLite    │  ┌─────────────┐              │
-│   │  VLM + LLM  │    │   Archive   │  │  Obsidian   │              │
-│   └─────────────┘    └─────────────┘  │  WikiLinks  │              │
-│                                        └─────────────┘              │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-### Tech Stack
-
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **Watcher** | Go 1.25 | High-frequency capture, Win32 API |
-| **Brain** | Python 3.12 | AI analysis, session tracking, RAG |
-| **VectorDB** | Redis Stack | Embeddings, semantic search |
-| **LLM** | Ollama (DeepSeek R1) | Intent inference, summarization |
-| **VLM** | Ollama (MiniCPM-V) | Screenshot analysis |
-| **Graph** | NetworkX | Knowledge graph, related concept discovery |
-| **Archive** | SQLite WAL | Persistent storage |
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
+*   **OS**: Windows 10/11 (Linux/macOS coming soon)
+*   **Hardware**: NVIDIA GPU (8GB+ VRAM recommended for local AI)
+*   **Software**:
+    *   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+    *   [Go 1.25+](https://go.dev/dl/)
+    *   [Python 3.12+](https://www.python.org/downloads/)
+    *   [Ollama](https://ollama.com/)
 
-- **OS**: Windows 10/11
-- **GPU**: NVIDIA RTX (8GB+ VRAM recommended)
-- **RAM**: 16GB+ (80GB recommended for aggressive caching)
-- **Software**: Docker, Go 1.22+, Python 3.12, Ollama
+### Installation Guide
 
-### Installation
+1.  **Clone the Repository**
+    ```powershell
+    git clone https://github.com/vel5id/mnemosyne.git
+    cd mnemosyne
+    ```
 
-```powershell
-# 1. Clone repository
-git clone https://github.com/vel5id/mnemosyne.git
-cd mnemosyne
+2.  **Setup Python Environment**
+    ```powershell
+    python -m venv .venv
+    .venv\Scripts\activate
+    pip install -r requirements.txt
+    ```
 
-# 2. Setup Python environment
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
+3.  **Build the Watcher (Go)**
+    ```powershell
+    scripts\build_watcher.bat
+    ```
 
-# 3. Build Go Watcher
-scripts\build_watcher.bat
+4.  **Launch Infrastructure (Redis Stack)**
+    ```powershell
+    docker-compose up -d redis
+    ```
 
-# 4. Start Redis Stack
-docker-compose up -d redis
+5.  **Prepare AI Models**
+    ```powershell
+    ollama pull minicpm-v          # For Vision
+    ollama pull deepseek-r1:1.5b  # For Reasoning
+    ollama pull nomic-embed-text  # For RAG
+    ```
 
-# 5. Pull Ollama models
-ollama pull minicpm-v
-ollama pull deepseek-r1:1.5b
-ollama pull nomic-embed-text
-
-# 6. Initialize database
-scripts\reset_db.bat
-```
+6.  **Initialize Database**
+    ```powershell
+    scripts\reset_db.bat  # Warning: partial wipe if re-running
+    ```
 
 ---
 
-## Usage
+## 🕹️ Usage
 
-### Start the System
+### 1. Start the System
+You need two terminal windows:
 
+**Terminal A (The Eyes): Watcher**
 ```powershell
-# Terminal 1: Start Watcher (captures activity)
 scripts\run_watcher.bat
+```
+*Captures activity and pushes to Redis.*
 
-# Terminal 2: Start Brain (processes activity)
+**Terminal B (The Brain): Analysis Engine**
+```powershell
 scripts\brain_v4.bat
 ```
+*Consumes from Redis, runs AI analysis, builds sessions, and updates the Graph.*
 
-### Query Your History
+### 2. Query Your Digital Twin
+Use the CLI tools to interact with your data:
 
+**Semantic Search (RAG)**
 ```powershell
-# Semantic search
-python scripts\query_rag.py "What was I debugging yesterday?"
+python scripts\query_rag.py "What project did I work on yesterday?"
+```
 
-# Find related concepts
-python scripts\query_rag.py --related redis
+**Find Related Concepts**
+```powershell
+python scripts\query_rag.py --related "Memory Leak"
+```
 
-# View sessions
+**View Recent Sessions**
+```powershell
 python scripts\view_sessions.py
 ```
 
-### Maintenance
-
+### 3. Maintenance
+Keep your database healthy (Vacuum, Prune old logs):
 ```powershell
-# Database cleanup (prune old data, VACUUM)
 scripts\maintain_db.bat
-
-# Complete reset
-scripts\reset_db.bat
 ```
 
 ---
 
-## Configuration
+<div id="russian"></div>
 
-Copy `.env.example` to `.env` and configure:
+# 🇷🇺 Документация на Русском
 
-```env
-# Paths
-MNEMOSYNE_DB_PATH=.mnemosyne/activity.db
-OBSIDIAN_VAULT_PATH=C:/Users/your_vault
+## 📖 Обзор
 
-# AI Models
-VLM_MODEL=minicpm-v
-LLM_MODEL_HEAVY=deepseek-r1:1.5b
+**Mnemosyne** — это автономная система трекинга активности, ваш **Локальный Цифровой Двойник**. Она фиксирует, анализирует и визуализирует весь ваш цифровой рабочий процесс, не отправляя ни байта в облако.
 
-# Redis
-MNEMOSYNE_REDIS_HOST=localhost
+Представьте себе self-hosted версию **Rewind.ai**, но с **Graph RAG** (семантическим поиском), локальными нейросетями и интеграцией с **Obsidian**. Она превращает сырые логи активности в базу знаний, которой можно задавать вопросы.
+
+### Почему Mnemosyne?
+
+| Функция | Mnemosyne Core | Облачные трекеры (RescueTime, Rewind) |
+|---------|----------------|---------------------------------------|
+| **Суверенитет данных** | **100% Локально (Air-Gap)** | Облачные сервера (Риск утечки) |
+| **Интеллект** | **Локальные LLM (DeepSeek/Llama)** | Закрытые проприетарные модели |
+| **Поиск** | **Graph RAG + Семантика** | Ключевые слова / Метаданные |
+| **Цена** | **Бесплатно (Open Source)** | Ежемесячная подписка |
+| **Гибкость** | **Исходный код (Python/Go)** | Закрытая экосистема |
+
+---
+
+## ✨ Ключевые Возможности
+
+### 1. Высокоточный Захват (Watcher)
+- **Частота 5Hz**: Опрос заголовка окна, процесса и активности ввода каждые 200мс.
+- **Эффективность**: Написан на Go (Win32 API), потребляет <0.1% CPU и <20MB RAM.
+- **Умный Idle**: Автоматически детектирует простой (AFK) и игровые режимы.
+
+### 2. Когнитивный Мозг (Brain)
+- **Локальный VLM**: Использует `MiniCPM-V` для визуального анализа скриншотов (OCR + описание сцены).
+- **Определение Намерений**: Использует `DeepSeek R1` для понимания *сути* действия (например, "Отладка Redis кластера").
+- **Агрегация Сессий**: Группирует тики в осмысленные сессии (например, "Кодинг сессия: 45 мин").
+
+### 3. Graph RAG (Память)
+- **Векторный Поиск**: Эмбеддинг описаний сессий через `nomic-embed-text` в **Redis Stack**.
+- **Граф Знаний**: Строит топологический граф активностей через **NetworkX**.
+- **Запросы**: Поддерживает вопросы на естественном языке, например *"Что я дебажил в прошлую пятницу?"*.
+
+### 4. Архитектура Enterprise-уровня
+- **Write-Behind Pattern**: Redis работает как скоростной буфер, защищая SSD от износа.
+- **Асинхронная обработка**: Python-воркеры обрабатывают данные пачками.
+- **Обслуживание**: Скрипты для автоматической очистки (VACUUM) и сжатия базы.
+
+---
+
+## 🏗️ Архитектура
+
+*(См. диаграмму в английской секции)*
+
+Система состоит из трех слоев:
+1.  **Tier 1 (Сбор)**: Go-приложение считывает состояние Windows API и кидает в Redis Stream.
+2.  **Tier 2 (Обработка)**: Python-ядро забирает данные, запускает нейросети (Ollama), строит Граф.
+3.  **Tier 3 (Хранение)**: Redis (оперативная память/вектора) и SQLite (долговременный архив).
+
+---
+
+## 🚀 Начало Работы
+
+### Требования
+*   **ОС**: Windows 10/11
+*   **Железо**: Видеокарта NVIDIA (рекомендуется 8GB+ VRAM)
+*   **ПО**: Docker, Go, Python, Ollama.
+
+### Пошаговая Установка
+
+1.  **Клонирование репозитория**
+    ```powershell
+    git clone https://github.com/vel5id/mnemosyne.git
+    cd mnemosyne
+    ```
+
+2.  **Настройка Python**
+    ```powershell
+    python -m venv .venv
+    .venv\Scripts\activate
+    pip install -r requirements.txt
+    ```
+
+3.  **Сборка Watcher (Go)**
+    ```powershell
+    scripts\build_watcher.bat
+    ```
+
+4.  **Запуск Инфраструктуры (Redis)**
+    ```powershell
+    docker-compose up -d redis
+    ```
+
+5.  **Загрузка Нейросетей**
+    ```powershell
+    ollama pull minicpm-v          # Зрение
+    ollama pull deepseek-r1:1.5b  # Мышление
+    ollama pull nomic-embed-text  # Память (RAG)
+    ```
+
+6.  **Инициализация Базы Данных**
+    ```powershell
+    scripts\reset_db.bat
+    ```
+
+---
+
+## 🕹️ Использование
+
+### 1. Запуск Системы
+Вам понадобятся два окна терминала:
+
+**Терминал А (Глаза): Watcher**
+```powershell
+scripts\run_watcher.bat
+```
+
+**Терминал Б (Мозг): Brain**
+```powershell
+scripts\brain_v4.bat
+```
+
+### 2. Запросы к Цифровому Двойнику
+
+**Семантический поиск (RAG)**
+```powershell
+python scripts\query_rag.py "Над каким проектом я работал вчера?"
+```
+
+**Поиск связей**
+```powershell
+python scripts\query_rag.py --related "Memory Leak"
+```
+
+**Просмотр сессий**
+```powershell
+python scripts\view_sessions.py
+```
+
+### 3. Обслуживание
+Очистка старых логов и оптимизация БД:
+```powershell
+scripts\maintain_db.bat
 ```
 
 ---
 
-## Project Structure
+## 📁 Project Structure / Структура Проекта
 
 ```
 mnemosyne/
-├── cmd/watcher/           # Go entry point
-├── internal/              # Go modules
+├── cmd/watcher/           # Go Watcher entry point
+├── internal/              # Go internal modules
 │   ├── monitor/          # 5Hz polling loop
-│   ├── buffer/           # RAM buffer
-│   ├── storage/          # Redis + SQLite writers
-│   └── heuristics/       # Game detection, idle tracking
-├── core/                  # Python modules
-│   ├── aggregation/      # Session tracking
+│   ├── storage/          # Redis + SQLite adapters
+│   └── heuristics/       # Game/Idle detection
+├── core/                  # Python Brain modules
+│   ├── aggregation/      # Session tracking logic
 │   ├── cognition/        # LLM intent inference
-│   ├── perception/       # OCR, VLM, UI automation
-│   ├── rag/              # LlamaIndex + NetworkX
-│   ├── dal/              # Database access layer
-│   └── security/         # PII sanitization
-├── scripts/              # CLI utilities
-├── docker/               # Container definitions
-├── db/                   # SQL schemas
-└── docs/                 # Architecture documentation
+│   ├── perception/       # VLM/OCR processing
+│   ├── rag/              # LlamaIndex + NetworkX engine
+│   └── dal/              # Database maintenance
+├── scripts/              # Batch & Python utility scripts
+├── docker/               # Docker configurations
+└── db/                   # SQL Schema definitions
 ```
 
 ---
 
-## Roadmap
+## 📜 License
 
-- [x] **Phase 1-5**: Core Watcher + Brain pipeline
-- [x] **Phase 6**: Session Aggregation with LLM summarization
-- [x] **Phase 7**: Storage Optimization (VACUUM, pruning)
-- [x] **Phase 8**: Graph RAG (LlamaIndex + NetworkX)
-- [ ] **Phase 9**: Obsidian Plugin for real-time dashboard
-- [ ] **Phase 10**: Cross-platform support (Linux, macOS)
-
----
-
-## Documentation
-
-- [Watcher Architecture](docs/01_Watcher_Go_Arch.md)
-- [Brain Architecture](docs/02_Brain_Python_Arch.md)
-- [SQL Schema](docs/04_SQL_Schema.md)
-- [ROADMAP](ROADMAP.md)
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing`)
-5. Open a Pull Request
-
----
-
-## License
-
-MIT License — see [LICENSE](LICENSE) for details.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
