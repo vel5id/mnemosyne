@@ -3,14 +3,14 @@
 package monitor
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
+	"encoding/base64"
 	"fmt"
 	"image"
 	"image/jpeg"
 	"log"
-	"os"
-	"path/filepath"
 	"runtime"
 	"sync"
 	"syscall"
@@ -35,11 +35,11 @@ type Config struct {
 // DefaultConfig returns sensible defaults for the monitor.
 func DefaultConfig() Config {
 	return Config{
-		TickInterval:       200 * time.Millisecond, // 5Hz
+		TickInterval:       1000 * time.Millisecond, // 1Hz (1 tick per second)
 		IdleThreshold:      60 * time.Second,
-		BufferCapacity:     500,
+		BufferCapacity:     100,
 		FlushTimeout:       5 * time.Minute,
-		ScreenshotInterval: 2 * time.Second,
+		ScreenshotInterval: 1 * time.Second, // Rate limit: 1 screenshot per second
 	}
 }
 
@@ -67,6 +67,7 @@ type Monitor struct {
 	skippedTicks uint64 // Ticks skipped due to game mode
 	idleTicks    uint64
 	flushCount   uint64
+	eventsPushed uint64
 	startTime    time.Time
 }
 
@@ -173,21 +174,21 @@ func (m *Monitor) tick() {
 	inputScore := m.calculateInputScore(isIdle)
 
 	// Step 4.5: Screenshot Capture (Active Vision)
-	var screenshotPath string
+	var screenshotData []byte
 
 	// Only capture if:
 	// 1. Not idle (don't screenshot empty screens or screensavers)
 	// 2. Interval passed (2s default)
 	// 3. Not game mode (already checked above)
 	if !isIdle && now.Sub(m.state.LastScreenshotTime) >= m.config.ScreenshotInterval {
-		path, err := m.captureScreenshot(hwnd)
+		data, err := m.captureScreenshot(hwnd)
 		if err != nil {
 			// Log error periodically, don't spam
 			if m.tickCount%50 == 0 {
 				log.Printf("Screenshot failed: %v", err)
 			}
 		} else {
-			screenshotPath = path
+			screenshotData = data
 			m.state.LastScreenshotTime = now
 		}
 	}
@@ -213,7 +214,7 @@ func (m *Monitor) tick() {
 	processChanged := m.state.LastProcessName != processName
 	timePassed := now.Sub(m.state.LastTickTime) > 5*time.Second
 
-	if windowChanged || titleChanged || processChanged || timePassed || (!isIdle && inputScore > 0.1) || screenshotPath != "" {
+	if windowChanged || titleChanged || processChanged || timePassed || (!isIdle && inputScore > 0.1) || len(screenshotData) > 0 {
 		shouldLog = true
 	}
 
@@ -226,7 +227,8 @@ func (m *Monitor) tick() {
 			WindowHandle:   int64(hwnd),
 			InputIdleMs:    int64(idleTime),
 			InputIntensity: inputScore,
-			ScreenshotPath: screenshotPath,
+			ScreenshotPath: "RAM", // Placeholder for legacy DB compatibility
+			ScreenshotData: screenshotData,
 		}
 
 		// Add to buffer
@@ -285,59 +287,36 @@ func (m *Monitor) calculateInputScore(isIdle bool) float32 {
 	return 1.0 - float32(idleTime)/5000.0
 }
 
-// captureScreenshot captures the window content and saves it to disk.
-func (m *Monitor) captureScreenshot(hwnd syscall.Handle) (string, error) {
+// captureScreenshot captures the window content and returns JPEG bytes.
+// Uses in-memory processing to avoid SSD writes (Ephemeral Vision).
+func (m *Monitor) captureScreenshot(hwnd syscall.Handle) ([]byte, error) {
 	// 1. Get Window Rect
 	rect, err := win32.GetWindowRect(hwnd)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	// 2. Normalize coordinates (handle negative off-screen)
+	// 2. Normalize coordinates
 	width := int(rect.Right - rect.Left)
 	height := int(rect.Bottom - rect.Top)
 
 	if width <= 0 || height <= 0 {
-		return "", fmt.Errorf("invalid dimensions: %dx%d", width, height)
+		return nil, fmt.Errorf("invalid dimensions: %dx%d", width, height)
 	}
 
 	// 3. Capture
-	// Note: CaptureRect expects global screen coordinates
 	img, err := screenshot.CaptureRect(image.Rect(int(rect.Left), int(rect.Top), int(rect.Right), int(rect.Bottom)))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	// 4. Prepare Directory (.mnemosyne/screenshots/YYYY-MM-DD)
-	now := time.Now()
-	dateStr := now.Format("2006-01-02")
-	dir := filepath.Join(".mnemosyne", "screenshots", dateStr)
-
-	if err := os.MkdirAll(dir, 0755); err != nil {
-		return "", err
+	// 4. Encode to JPEG in memory
+	var buf bytes.Buffer
+	if err := jpeg.Encode(&buf, img, &jpeg.Options{Quality: 75}); err != nil {
+		return nil, err
 	}
 
-	// 5. Save File
-	filename := fmt.Sprintf("%d.jpg", now.UnixMilli())
-	path := filepath.Join(dir, filename)
-
-	file, err := os.Create(path)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	// Use generic JPEG quality
-	if err := jpeg.Encode(file, img, &jpeg.Options{Quality: 75}); err != nil {
-		return "", err
-	}
-
-	// Return absolute path for clarity
-	absPath, err := filepath.Abs(path)
-	if err != nil {
-		return path, nil // Return relative if Abs fails
-	}
-	return absPath, nil
+	return buf.Bytes(), nil
 }
 
 // flushHandler handles periodic flushes from the buffer's flush channel.
@@ -382,7 +361,12 @@ func (m *Monitor) flush() {
 				"window_hwnd":     entry.WindowHandle,
 				"input_idle":      entry.InputIdleMs,
 				"intensity":       entry.InputIntensity,
-				"screenshot_path": entry.ScreenshotPath,
+				"screenshot_path": entry.ScreenshotPath, // "RAM"
+			}
+
+			// Attach image data if present
+			if len(entry.ScreenshotData) > 0 {
+				data["image_data"] = base64.StdEncoding.EncodeToString(entry.ScreenshotData)
 			}
 
 			if err := m.redis.PublishEvent(ctx, "mnemosyne:events", data); err != nil {
@@ -394,6 +378,7 @@ func (m *Monitor) flush() {
 
 		if pushed > 0 {
 			m.flushCount++
+			m.eventsPushed += uint64(pushed)
 		}
 		return
 	}
@@ -476,6 +461,7 @@ func (m *Monitor) logStats() {
 	skippedTicks := m.skippedTicks
 	idleTicks := m.idleTicks
 	flushCount := m.flushCount
+	eventsPushed := m.eventsPushed
 	m.mu.RUnlock()
 
 	// Memory stats
@@ -491,20 +477,29 @@ func (m *Monitor) logStats() {
 	// Uptime
 	uptime := time.Since(m.startTime).Round(time.Second)
 
-	// DB events count
-	var totalEvents, pendingEvents int64
-	row := m.db.QueryRow("SELECT COUNT(*) FROM raw_events")
-	row.Scan(&totalEvents)
-	row = m.db.QueryRow("SELECT COUNT(*) FROM raw_events WHERE is_processed = 0")
-	row.Scan(&pendingEvents)
-
 	// Log formatted stats
 	log.Printf("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 	log.Printf("📊 WATCHER STATS | Uptime: %s", uptime)
 	log.Printf("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 	log.Printf("🔄 Ticks: %d total | %d idle | %d skipped (games)", tickCount, idleTicks, skippedTicks)
 	log.Printf("💾 Buffer: %d entries | %d bytes", bufferLen, bufferSize)
-	log.Printf("📁 Database: %d events | %d pending | %d flushes", totalEvents, pendingEvents, flushCount)
+
+	if m.redis != nil {
+		log.Printf("🚀 Redis: %d events pushed | %d flushes", eventsPushed, flushCount)
+	} else {
+		// Legacy DB counts
+		var totalEvents, pendingEvents int64
+		row := m.db.QueryRow("SELECT COUNT(*) FROM raw_events")
+		if err := row.Scan(&totalEvents); err != nil {
+			totalEvents = -1
+		}
+		row = m.db.QueryRow("SELECT COUNT(*) FROM raw_events WHERE is_processed = 0")
+		if err := row.Scan(&pendingEvents); err != nil {
+			pendingEvents = -1
+		}
+		log.Printf("📁 Database: %d events | %d pending | %d flushes", totalEvents, pendingEvents, flushCount)
+	}
+
 	log.Printf("🧠 RAM: %.1f MB used | %.1f MB sys", allocMB, sysMB)
 	log.Printf("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 }

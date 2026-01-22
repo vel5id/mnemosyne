@@ -1,3 +1,33 @@
-# .gitattributes
-# Заставляем всегда использовать LF для скриптов, даже на Windows
+# Default to LF for all text files (Python, Go, JS, etc.)
+* text=auto eol=lf
+
+# Explicitly force LF for code
+*.py text eol=lf
+*.go text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
 *.sh text eol=lf
+
+# Keep CRLF for Windows specific scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flac binary
+*.pdf binary
+*.sqlite binary
+*.db binary

@@ -21,5 +21,14 @@ else
     echo "Model deepseek-r1:1.5b ready!"
 fi
 
+# Check if embedding model exists
+if ollama list | grep -q "nomic-embed-text"; then
+    echo "Model nomic-embed-text already loaded"
+else
+    echo "Pulling nomic-embed-text model..."
+    ollama pull nomic-embed-text
+    echo "Model nomic-embed-text ready!"
+fi
+
 # Keep server running
 wait $pid

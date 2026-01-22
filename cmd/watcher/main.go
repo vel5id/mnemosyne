@@ -130,9 +130,9 @@ func main() {
 func parseFlags() Config {
 	dbPath := flag.String("db", defaultDBPath, "Path to SQLite database file")
 	redisAddr := flag.String("redis", "", "Redis address (e.g., localhost:6379)")
-	tickInterval := flag.Duration("tick", 500*time.Millisecond, "Tick interval (e.g., 500ms for 2Hz, 1000ms for 1Hz)")
+	tickInterval := flag.Duration("tick", 1000*time.Millisecond, "Tick interval (e.g., 1000ms for 1Hz)")
 	idleThreshold := flag.Duration("idle", 60*time.Second, "Idle threshold before marking as idle")
-	bufferCapacity := flag.Int("buffer", 500, "Buffer capacity before forced flush")
+	bufferCapacity := flag.Int("buffer", 100, "Buffer capacity before forced flush")
 	flushTimeout := flag.Duration("flush", 5*time.Minute, "Time between automatic flushes")
 
 	flag.Parse()

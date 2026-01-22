@@ -67,51 +67,51 @@ services:
   # ===========================================================
   # Tier 2: Brain (Python) - Cognitive Layer
   # ===========================================================
-  brain:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.brain
-    container_name: mnemosyne-brain
-    volumes:
-      - ./.mnemosyne:/app/.mnemosyne
-      - ./.mnemosyne/screenshots:/app/.mnemosyne/screenshots
-      - ${OBSIDIAN_VAULT_PATH:-./obsidian_export}:/app/obsidian
-    environment:
-      - MNEMOSYNE_DB_PATH=/app/.mnemosyne/activity.db
-      - OBSIDIAN_VAULT_PATH=/app/obsidian
-      - BATCH_SIZE=${BATCH_SIZE:-100}
-      - POLL_INTERVAL_SECONDS=${POLL_INTERVAL_SECONDS:-5}
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
-      # Model configuration
-      - VLM_BACKEND=${VLM_BACKEND:-ollama}
-      - VLM_MODEL=${VLM_MODEL:-minicpm-v}
-      - OLLAMA_VLM_HOST=http://ollama-vlm:11434
-      - OLLAMA_LLM_HOST=http://ollama-llm:11434
-      - LLM_MODEL_HEAVY=${LLM_MODEL_HEAVY:-deepseek-r1:1.5b}
-      - LLM_MODEL_LIGHT=${LLM_MODEL_LIGHT:-phi3:mini}
-    depends_on:
-      db:
-        condition: service_healthy
-      ollama-vlm:
-        condition: service_started
-      ollama-llm:
-        condition: service_started
-    networks:
-      - mnemosyne_network
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [ gpu ]
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD", "python", "-c", "import core.dal.sqlite_provider; print('OK')" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  # brain:
+  #  build:
+  #    context: .
+  #    dockerfile: docker/Dockerfile.brain
+  #  container_name: mnemosyne-brain
+  #  volumes:
+  #    - ./.mnemosyne:/app/.mnemosyne
+  #    - ./.mnemosyne/screenshots:/app/.mnemosyne/screenshots
+  #    - ${OBSIDIAN_VAULT_PATH:-./obsidian_export}:/app/obsidian
+  #  environment:
+  #    - MNEMOSYNE_DB_PATH=/app/.mnemosyne/activity.db
+  #    - OBSIDIAN_VAULT_PATH=/app/obsidian
+  #    - BATCH_SIZE=${BATCH_SIZE:-100}
+  #    - POLL_INTERVAL_SECONDS=${POLL_INTERVAL_SECONDS:-5}
+  #    - LOG_LEVEL=${LOG_LEVEL:-INFO}
+  #    # Model configuration
+  #    - VLM_BACKEND=${VLM_BACKEND:-ollama}
+  #    - VLM_MODEL=${VLM_MODEL:-minicpm-v}
+  #    - OLLAMA_VLM_HOST=http://ollama-vlm:11434
+  #    - OLLAMA_LLM_HOST=http://ollama-llm:11434
+  #    - LLM_MODEL_HEAVY=${LLM_MODEL_HEAVY:-deepseek-r1:1.5b}
+  #    - LLM_MODEL_LIGHT=${LLM_MODEL_LIGHT:-phi3:mini}
+  #  depends_on:
+  #    db:
+  #      condition: service_healthy
+  #    ollama-vlm:
+  #      condition: service_started
+  #    ollama-llm:
+  #      condition: service_started
+  #  networks:
+  #    - mnemosyne_network
+  #  deploy:
+  #    resources:
+  #      reservations:
+  #        devices:
+  #          - driver: nvidia
+  #            count: 1
+  #            capabilities: [ gpu ]
+  #  restart: unless-stopped
+  #  healthcheck:
+  #    test: [ "CMD", "python", "-c", "import core.dal.sqlite_provider; print('OK')" ]
+  #    interval: 30s
+  #    timeout: 10s
+  #    retries: 3
+  #    start_period: 10s
 
   # ===========================================================
   # Dashboard - Status Monitoring Web UI
@@ -162,7 +162,7 @@ services:
       - OLLAMA_ORIGINS=*
       - VLM_MODEL=${VLM_MODEL:-minicpm-v}
     ports:
-      - "11434:11434"
+      - "11436:11434"
     networks:
       - mnemosyne_network
     deploy:
@@ -174,11 +174,11 @@ services:
               capabilities: [ gpu ]
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:11434/api/tags" ]
+      test: [ "CMD-SHELL", "curl -s http://localhost:11434/api/tags | grep -q minicpm-v || exit 1" ]
       interval: 30s
       timeout: 10s
-      retries: 5
-      start_period: 120s
+      retries: 20
+      start_period: 60s
 
   # ===========================================================
   # Ollama LLM - Reasoning Models
@@ -209,11 +209,11 @@ services:
               capabilities: [ gpu ]
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:11434/api/tags" ]
+      test: [ "CMD-SHELL", "curl -s http://localhost:11434/api/tags | grep -q deepseek-r1 || exit 1" ]
       interval: 30s
       timeout: 10s
-      retries: 5
-      start_period: 120s
+      retries: 20
+      start_period: 60s
 
 # ===========================================================
 # Volumes

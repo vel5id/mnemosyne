@@ -1,0 +1,2910 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:555f0f6d"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_22248"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:02a270df"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_22740"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:91ae97ac"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_6532"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:dfa8d192"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:050623e4"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_35760"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:0e0994ad"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e525d046"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:90fde768"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:0cc4b4c2"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2aa4295f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:57d64bc4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f136cfee"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_13572"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:deaf0f7a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4091d79f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f951a104"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:28ac00f2"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: Debugged Redis integration in my VS Code project and researched XREADGROUP patterns, then r",
+      "id": "session:402e367a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f4a563b3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7c196fc3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fef27393"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:cdc1edb8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:1f9e4136"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:207bc3f0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:a4d45c95"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6ff6e267"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7551a3ca"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b8a67a08"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:8626a3e4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:8a819937"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:85127cb0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5eb91507"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e5b60ef9"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c96e5d60"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:3d9250bf"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:3aa00dac"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f3834b0b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:17dea129"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c364a12c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ee0f7dd4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ccc4f5e5"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:1bbe7d60"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:de02ed3f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:01f1c798"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b28acb7c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5e9bb528"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f6bb06b9"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:dd526345"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:945dc7d7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ae38313f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:405ccb55"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b4931e1e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:a4634dad"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4d337f36"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2fe2c043"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:34bebe22"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:8f7a29a8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4a398f47"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:13d3f80c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:84e86b9c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:bed13595"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f618eb9e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:98abb90f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ed319176"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ef276308"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9187db28"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d527cfc3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:8a60f4d3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:1636c06c"
+    },
+    {
+      "type": "Session",
+      "summary": "\"Debugged [[Redis consumer]] integration in [[mnemosyne]] project, explored [[XREADGROUP]] patterns ",
+      "id": "session:2e28d196"
+    },
+    {
+      "type": "Concept",
+      "id": "concept:redis consumer"
+    },
+    {
+      "type": "Concept",
+      "id": "concept:mnemosyne"
+    },
+    {
+      "type": "Concept",
+      "id": "concept:xreadgroup"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:311674a8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:0bcbefda"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:1c13099c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:1830b32b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7772c283"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c465da87"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:cab51b5b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6a1d5b01"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f9650010"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6f99a0f0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c7782d76"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_18464"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b27ecf04"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:541f65d9"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:72fefd2d"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6bc764e0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:715e8e96"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7c229706"
+    },
+    {
+      "type": "Session",
+      "summary": "- Debugged Redis consumer integration into mnemosyne, researched X",
+      "id": "session:4035ba1d"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:a8e55c36"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:dbdf3527"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: User has been actively working on Redis integration debugging in mnemosyne - File Explorer,",
+      "id": "session:024575a4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:bc359ca0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:435d860d"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7b0b36a7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d0e653a7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:85dbd734"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary:",
+      "id": "session:414fd85f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:24524292"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5ed3915a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b0ad7990"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e88354f7"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_33328"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:45bcf873"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9d0032f9"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:af168f00"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:280b527d"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:61a38130"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_10052"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d3a8bcab"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e3b83c22"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b8e1a9d5"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary",
+      "id": "session:e83c2eb1"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:a1ba95cb"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5f62627c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:424f7ad3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b7589b5f"
+    },
+    {
+      "type": "Session",
+      "summary": "\"Completed integration of Redis consumer into status_dashboard.py and researched XREADGROUP patterns",
+      "id": "session:ff654e5c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:585f5a08"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:05c6dba1"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: The user actively engaged in a low-intensity search activity within Google Chrome's Dollars",
+      "id": "session:a3cec388"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e5d59099"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f57f15b6"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7c6f6688"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4317fb1c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:13675749"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4818a77f"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: The user was working on integrating Redis consumer into their application during a low-inte",
+      "id": "session:c4f4d352"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:421b3e46"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:549666fb"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:801b7de1"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:114c209f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:101bb155"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:66adf12d"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c3993ac7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:11edd316"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:030ae521"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7edf19da"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:27dd8450"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4fa4ff52"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:3ce0f781"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4a0185ce"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b6b85d76"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: The user successfully debugged Redis consumer integration and researched XREADGROUP pattern",
+      "id": "session:81e1dd66"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: The user successfully debugged Redis consumer integration in the mn",
+      "id": "session:9d13e7c5"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b81b550c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:bdb5e96d"
+    },
+    {
+      "type": "Session",
+      "summary": "The user was actively exploring the mnemosyne file explorer window associated with PID_6532. They we",
+      "id": "session:e8d23da7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b0cd9fd4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5aba258f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:448ea695"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e182363f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:3eb18627"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ba5413a8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:af3f43c8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:18494856"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2cfdc6e5"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2442bef3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:83b36277"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d9d69e89"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:617646ea"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fbaf455e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:dd5e81ed"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:00a44a30"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: User worked on Redis integration in the mnemosyne project",
+      "id": "session:bd974217"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_38228"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2720f828"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4e73f7df"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9c623a16"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:180ab20c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d7b6345b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ece122ef"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:43987432"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d6d23dc8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ca8574c0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:a276fe83"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:1a676531"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:0a803396"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6c7655e8"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: Debugged Redis consumer integration and researched",
+      "id": "session:34e5b819"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: The user successfully integrated Redis consumers",
+      "id": "session:d4e993c2"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c4e295ca"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:29e125a0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d6806af6"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:00bbae35"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e5ae6dc8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ebb4149c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:518f091b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:0e4a9a2a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c12d9a19"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ffb58f31"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:55231df1"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:864f035f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:edfd78d1"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:14861cdb"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:8aed617f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:20c0e59c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7671e8ff"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fc8f1172"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f8b65efa"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:bc797500"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2158f9af"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e8200548"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b8404421"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6d6ab4d9"
+    },
+    {
+      "type": "Session",
+      "summary": "Summary: The user was actively involved in debugging Redis integration within the mnemosyne project ",
+      "id": "session:fcd8569a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ea98c00c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fece0c9a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6cb356f4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ee11d116"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_24676"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:00ccffb4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:cd817a92"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:69db40c2"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:dff54264"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:585e1753"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f0e941e3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d03a94d0"
+    },
+    {
+      "type": "Session",
+      "summary": "- User in Nath window with Vladimir as primary application, worked on Redis consumer integration and",
+      "id": "session:071e3d8c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e34ccfba"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:938a0a28"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5bd06bd9"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:81ccfa22"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c579570d"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:63c96a47"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9f746e57"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:01f4e3e0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b57bc008"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:3ec9b93c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fb8b3d6b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e5c26f89"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e06b2469"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2804c144"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c7a7fce4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5dd7c90e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:de857f0c"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4d5939a3"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:378ee8a8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e143c013"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9e0bb428"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c1d18acb"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:84e91ff0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:0579f641"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5342a9fd"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:336118f7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e754338e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:2d6cec9e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:a99b2dc5"
+    },
+    {
+      "type": "Session",
+      "summary": "Nath worked on debugging Redis consumer integration in the mnemosyne project and investigated XREADG",
+      "id": "session:c250d650"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9f6d87e8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:6fe673dd"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9117d4f4"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d9e81a89"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:bdfb2cf1"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:89e76b80"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:c9ebab66"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ec30c0b8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:cfc87bd8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:77d287a2"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:27722456"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b8d681ca"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4c350ac7"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4236b128"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:677c3412"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:99d1aff5"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fbde840e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:636dc5f0"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:444bc24b"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:35753514"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:bffa38e8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9bf34fba"
+    },
+    {
+      "type": "Application",
+      "id": "app:PID_5292"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:b8e7ee1e"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:8fa5fceb"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:ece53755"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5c729b6a"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:f49dd199"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:fa092bf6"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:5ecd3a87"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:9135a1b8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:7b21d898"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4e374f01"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:4a8c4f73"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:354e2eb8"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:e2dc04fa"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:91ad4910"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:d767ffe2"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:3c59c89f"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:268dcebc"
+    },
+    {
+      "type": "Session",
+      "summary": "",
+      "id": "session:936de9fd"
+    }
+  ],
+  "edges": [
+    {
+      "relation": "USES",
+      "source": "session:555f0f6d",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:02a270df",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:91ae97ac",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:dfa8d192",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:050623e4",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:0e0994ad",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e525d046",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:90fde768",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:0cc4b4c2",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2aa4295f",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:57d64bc4",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f136cfee",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:deaf0f7a",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4091d79f",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f951a104",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:28ac00f2",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:402e367a",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f4a563b3",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7c196fc3",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fef27393",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:cdc1edb8",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:1f9e4136",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:207bc3f0",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a4d45c95",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6ff6e267",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7551a3ca",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b8a67a08",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:8626a3e4",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:8a819937",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:85127cb0",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5eb91507",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e5b60ef9",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c96e5d60",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:3d9250bf",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:3aa00dac",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f3834b0b",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:17dea129",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c364a12c",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ee0f7dd4",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ccc4f5e5",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:1bbe7d60",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:de02ed3f",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:01f1c798",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b28acb7c",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5e9bb528",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f6bb06b9",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:dd526345",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:945dc7d7",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ae38313f",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:405ccb55",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b4931e1e",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a4634dad",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4d337f36",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2fe2c043",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:34bebe22",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:8f7a29a8",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4a398f47",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:13d3f80c",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:84e86b9c",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bed13595",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f618eb9e",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:98abb90f",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ed319176",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ef276308",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9187db28",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d527cfc3",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:8a60f4d3",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:1636c06c",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2e28d196",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "MENTIONS",
+      "source": "session:2e28d196",
+      "target": "concept:redis consumer"
+    },
+    {
+      "relation": "MENTIONS",
+      "source": "session:2e28d196",
+      "target": "concept:mnemosyne"
+    },
+    {
+      "relation": "MENTIONS",
+      "source": "session:2e28d196",
+      "target": "concept:xreadgroup"
+    },
+    {
+      "relation": "USES",
+      "source": "session:311674a8",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:0bcbefda",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:1c13099c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:1830b32b",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7772c283",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c465da87",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:cab51b5b",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6a1d5b01",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f9650010",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6f99a0f0",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c7782d76",
+      "target": "app:PID_18464"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b27ecf04",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:541f65d9",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:72fefd2d",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6bc764e0",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:715e8e96",
+      "target": "app:PID_18464"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7c229706",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4035ba1d",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a8e55c36",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:dbdf3527",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:024575a4",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bc359ca0",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:435d860d",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7b0b36a7",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d0e653a7",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:85dbd734",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:414fd85f",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:24524292",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5ed3915a",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b0ad7990",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e88354f7",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:45bcf873",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9d0032f9",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:af168f00",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:280b527d",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:61a38130",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d3a8bcab",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e3b83c22",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b8e1a9d5",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e83c2eb1",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a1ba95cb",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5f62627c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:424f7ad3",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b7589b5f",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ff654e5c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:585f5a08",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:05c6dba1",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a3cec388",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e5d59099",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f57f15b6",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7c6f6688",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4317fb1c",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:13675749",
+      "target": "app:PID_10052"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4818a77f",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c4f4d352",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:421b3e46",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:549666fb",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:801b7de1",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:114c209f",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:101bb155",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:66adf12d",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c3993ac7",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:11edd316",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:030ae521",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7edf19da",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:27dd8450",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4fa4ff52",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:3ce0f781",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4a0185ce",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b6b85d76",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:81e1dd66",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9d13e7c5",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b81b550c",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bdb5e96d",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e8d23da7",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b0cd9fd4",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5aba258f",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:448ea695",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e182363f",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:3eb18627",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ba5413a8",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:af3f43c8",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:18494856",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2cfdc6e5",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2442bef3",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:83b36277",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d9d69e89",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:617646ea",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fbaf455e",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:dd5e81ed",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:00a44a30",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bd974217",
+      "target": "app:PID_38228"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2720f828",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4e73f7df",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9c623a16",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:180ab20c",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d7b6345b",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ece122ef",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:43987432",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d6d23dc8",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ca8574c0",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a276fe83",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:1a676531",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:0a803396",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6c7655e8",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:34e5b819",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d4e993c2",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c4e295ca",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:29e125a0",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d6806af6",
+      "target": "app:PID_18464"
+    },
+    {
+      "relation": "USES",
+      "source": "session:00bbae35",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e5ae6dc8",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ebb4149c",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:518f091b",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:0e4a9a2a",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c12d9a19",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ffb58f31",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:55231df1",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:864f035f",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:edfd78d1",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:14861cdb",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:8aed617f",
+      "target": "app:PID_22740"
+    },
+    {
+      "relation": "USES",
+      "source": "session:20c0e59c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7671e8ff",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fc8f1172",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f8b65efa",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bc797500",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2158f9af",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e8200548",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b8404421",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6d6ab4d9",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fcd8569a",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ea98c00c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fece0c9a",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6cb356f4",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ee11d116",
+      "target": "app:PID_24676"
+    },
+    {
+      "relation": "USES",
+      "source": "session:00ccffb4",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:cd817a92",
+      "target": "app:PID_24676"
+    },
+    {
+      "relation": "USES",
+      "source": "session:69db40c2",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:dff54264",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:585e1753",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f0e941e3",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d03a94d0",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:071e3d8c",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e34ccfba",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:938a0a28",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5bd06bd9",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:81ccfa22",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c579570d",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:63c96a47",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9f746e57",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:01f4e3e0",
+      "target": "app:PID_33328"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b57bc008",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:3ec9b93c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fb8b3d6b",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e5c26f89",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e06b2469",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2804c144",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c7a7fce4",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5dd7c90e",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:de857f0c",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4d5939a3",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:378ee8a8",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e143c013",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9e0bb428",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c1d18acb",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:84e91ff0",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:0579f641",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5342a9fd",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:336118f7",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e754338e",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:2d6cec9e",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:a99b2dc5",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c250d650",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9f6d87e8",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:6fe673dd",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9117d4f4",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d9e81a89",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bdfb2cf1",
+      "target": "app:PID_35760"
+    },
+    {
+      "relation": "USES",
+      "source": "session:89e76b80",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:c9ebab66",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ec30c0b8",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:cfc87bd8",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:77d287a2",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:27722456",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b8d681ca",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4c350ac7",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4236b128",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:677c3412",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:99d1aff5",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fbde840e",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:636dc5f0",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:444bc24b",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:35753514",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:bffa38e8",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9bf34fba",
+      "target": "app:PID_5292"
+    },
+    {
+      "relation": "USES",
+      "source": "session:b8e7ee1e",
+      "target": "app:PID_5292"
+    },
+    {
+      "relation": "USES",
+      "source": "session:8fa5fceb",
+      "target": "app:PID_5292"
+    },
+    {
+      "relation": "USES",
+      "source": "session:ece53755",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5c729b6a",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:f49dd199",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:fa092bf6",
+      "target": "app:PID_6532"
+    },
+    {
+      "relation": "USES",
+      "source": "session:5ecd3a87",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:9135a1b8",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:7b21d898",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4e374f01",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:4a8c4f73",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:354e2eb8",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:e2dc04fa",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:91ad4910",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:d767ffe2",
+      "target": "app:PID_13572"
+    },
+    {
+      "relation": "USES",
+      "source": "session:3c59c89f",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:268dcebc",
+      "target": "app:PID_22248"
+    },
+    {
+      "relation": "USES",
+      "source": "session:936de9fd",
+      "target": "app:PID_22248"
+    }
+  ]
+}

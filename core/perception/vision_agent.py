@@ -14,6 +14,7 @@ Key Features:
 
 import gc
 import os
+import io
 import base64
 import logging
 from pathlib import Path
@@ -218,52 +219,66 @@ class VisionAgent:
         self,
         image_path: str,
         prompt: str = "Describe what you see in this image. Focus on the user interface, actions being performed, and any visible text.",
-        window_rect: Optional[Tuple[int, int, int, int]] = None
+        window_rect: Optional[Tuple[int, int, int, int]] = None,
+        image_data: Optional[bytes] = None
     ) -> Optional[str]:
         """
         Analyze a screenshot and generate a description.
         
         Args:
-            image_path: Path to the screenshot image file.
+            image_path: Path to the screenshot image file (ignored if image_data provided).
             prompt: Custom prompt for the VLM.
             window_rect: Optional tuple (left, top, right, bottom) for cropping.
+            image_data: Optional raw bytes of the image (RAM mode).
         
         Returns:
             String description, or None if analysis failed.
         """
-        image_file = Path(image_path)
-        if not image_file.exists():
-            logger.error(f"Image file not found: {image_path}")
-            return None
+        if image_data is None:
+            image_file = Path(image_path)
+            if not image_file.exists():
+                logger.error(f"Image file not found: {image_path}")
+                return None
         
-        # Handle window cropping
+        # Handle window cropping (RAM mode support needed)
         if window_rect is not None:
-            image = Image.open(image_path).convert('RGB')
-            left, top, right, bottom = window_rect
-            img_width, img_height = image.size
-            left = max(0, min(left, img_width))
-            top = max(0, min(top, img_height))
-            right = max(left, min(right, img_width))
-            bottom = max(top, min(bottom, img_height))
-            
-            if right > left and bottom > top:
-                image = image.crop((left, top, right, bottom))
-                # Save cropped image temporarily
-                temp_path = image_file.parent / f"_temp_crop_{image_file.name}"
-                image.save(temp_path)
-                image_path = str(temp_path)
-        
+            try:
+                if image_data:
+                    image = Image.open(io.BytesIO(image_data)).convert('RGB')
+                else:
+                    image = Image.open(image_path).convert('RGB')
+                
+                left, top, right, bottom = window_rect
+                img_width, img_height = image.size
+                left = max(0, min(left, img_width))
+                top = max(0, min(top, img_height))
+                right = max(left, min(right, img_width))
+                bottom = max(top, min(bottom, img_height))
+                
+                if right > left and bottom > top:
+                    image = image.crop((left, top, right, bottom))
+                    # Save to RAM buffer for consistency
+                    buf = io.BytesIO()
+                    image.save(buf, format="JPEG")
+                    image_data = buf.getvalue()
+                    # We updated image_data, so path is irrelevant now
+            except Exception as e:
+                logger.error(f"Cropping error: {e}")
+
         if self.backend == VLMBackend.OLLAMA:
-            return self._describe_ollama(image_path, prompt)
+            return self._describe_ollama(image_path, prompt, image_data)
         else:
-            return self._describe_local(image_path, prompt, window_rect)
+            return self._describe_local(image_path, prompt, window_rect, image_data)
     
-    def _describe_ollama(self, image_path: str, prompt: str) -> Optional[str]:
+    def _describe_ollama(self, image_path: str, prompt: str, image_data: Optional[bytes] = None) -> Optional[str]:
         """Describe image using Ollama API."""
         try:
             client = self._get_http_client()
             
-            image_b64 = self._image_to_base64(image_path)
+            if image_data:
+                image_b64 = base64.b64encode(image_data).decode("utf-8")
+            else:
+                image_b64 = self._image_to_base64(image_path)
             
             payload = {
                 "model": self.model_name,
@@ -293,7 +308,8 @@ class VisionAgent:
         self,
         image_path: str,
         prompt: str,
-        window_rect: Optional[Tuple[int, int, int, int]]
+        window_rect: Optional[Tuple[int, int, int, int]],
+        image_data: Optional[bytes] = None
     ) -> Optional[str]:
         """Describe image using local HuggingFace model."""
         if not self._check_vram():
@@ -304,7 +320,10 @@ class VisionAgent:
                 return "[VRAM Limit] Skipped vision analysis"
         
         try:
-            image = Image.open(image_path).convert('RGB')
+            if image_data:
+                image = Image.open(io.BytesIO(image_data)).convert('RGB')
+            else:
+                image = Image.open(image_path).convert('RGB')
             
             msgs = [{'role': 'user', 'content': [image, prompt]}]
             

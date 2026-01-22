@@ -92,11 +92,41 @@ class GraphRAGEngine:
             )
             Settings.embed_model = self._embed_model
             
+            # SETUP: RedisVL schema for LlamaIndex
+            from redisvl.schema import IndexSchema
+            from redisvl.schema.fields import TextField, TagField, NumericField
+
+            # Define schema for sessions
+            schema = IndexSchema.from_dict({
+                "index": {
+                    "name": "mnemosyne_sessions", 
+                    "prefix": "mnemosyne"
+                },
+                "fields": [
+                    {"name": "id", "type": "tag"},
+                    {"name": "doc_id", "type": "tag"},
+                    {"name": "text", "type": "text"},
+                    {"name": "session_uuid", "type": "tag"},
+                    {"name": "process", "type": "tag"},
+                    {"name": "duration_seconds", "type": "numeric"},
+                    {
+                        "name": "vector",
+                        "type": "vector",
+                        "attrs": {
+                            "dims": 768,
+                            "algorithm": "hnsw",
+                            "distance_metric": "cosine"
+                        }
+                    }
+                ]
+            })
+            
             # Setup Redis VectorStore
+            # Note: overwrite=False preserves existing index data between restarts
             self._vector_store = RedisVectorStore(
                 redis_url=self.redis_url,
-                index_name="mnemosyne_sessions",
-                overwrite=False
+                schema=schema,
+                overwrite=False  # Preserve index data (set True only for schema migration)
             )
             
             self._storage_context = StorageContext.from_defaults(
@@ -116,7 +146,8 @@ class GraphRAGEngine:
             logger.warning(f"LlamaIndex not available: {e}")
             return False
         except Exception as e:
-            logger.error(f"Failed to initialize LlamaIndex: {e}")
+            import traceback
+            logger.error(f"Failed to initialize LlamaIndex: {e}\n{traceback.format_exc()}")
             return False
     
     def index_session(self, session: Any) -> bool:
@@ -217,8 +248,8 @@ Summary: {summary}
         """
         Update NetworkX knowledge graph with session data.
         
-        Nodes: Session, Application, Project, Concept
-        Edges: USES, WORKS_ON, MENTIONS
+        Nodes: Session, Application, Event, Concept
+        Edges: USES, CONTAINS, MENTIONS
         """
         try:
             import re
@@ -227,6 +258,7 @@ Summary: {summary}
             process = getattr(session, 'primary_process', "unknown")
             summary = getattr(session, 'activity_summary', "") or ""
             tags = getattr(session, 'tags', []) or []
+            events = getattr(session, 'events', []) or []
             
             # Add session node
             session_node = f"session:{session_uuid[:8]}"
@@ -253,6 +285,40 @@ Summary: {summary}
                 tag_node = f"concept:{tag.lower()}"
                 self.graph.add_node(tag_node, type="Concept")
                 self.graph.add_edge(session_node, tag_node, relation="MENTIONS")
+            
+            # === Event-Level Detailization (Variant 3) ===
+            MAX_EVENTS_PER_SESSION = 10  # Limit to prevent graph explosion
+            
+            for i, event in enumerate(events[:MAX_EVENTS_PER_SESSION]):
+                if not isinstance(event, dict):
+                    continue
+                    
+                event_node = f"event:{session_uuid[:8]}:{i}"
+                event_process = event.get('process_name', 'unknown')
+                event_window = str(event.get('window_title', ''))[:50]
+                event_intent = event.get('user_intent', '') or ''
+                event_time = event.get('unix_time', 0)
+                
+                # Add Event node with detailed attributes
+                self.graph.add_node(
+                    event_node,
+                    type="Event",
+                    process=event_process,
+                    window=event_window,
+                    intent=event_intent[:100] if event_intent else '',
+                    timestamp=event_time
+                )
+                
+                # Edge: Session CONTAINS Event
+                self.graph.add_edge(session_node, event_node, relation="CONTAINS")
+                
+                # Extract concepts from event intent and link
+                if event_intent:
+                    event_concepts = re.findall(r'\[\[(.*?)\]\]', event_intent)
+                    for concept in event_concepts:
+                        concept_node = f"concept:{concept.lower()}"
+                        self.graph.add_node(concept_node, type="Concept")
+                        self.graph.add_edge(event_node, concept_node, relation="MENTIONS")
             
             logger.debug(f"Graph updated: {len(self.graph.nodes)} nodes, {len(self.graph.edges)} edges")
             

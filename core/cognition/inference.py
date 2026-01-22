@@ -484,9 +484,11 @@ Summary:"""
                 }
             }
             
+            # Use shorter timeout for summarization (30s max)
             response = self._client.post(
                 f"{self.ollama_host}/api/generate",
-                json=payload
+                json=payload,
+                timeout=30.0  # Explicit timeout for summarization
             )
             response.raise_for_status()
             
@@ -498,10 +500,102 @@ Summary:"""
             logger.debug(f"Session summary generated: {summary[:50]}...")
             return summary
             
+        except httpx.TimeoutException:
+            logger.warning(f"Session summarization timed out after 30s")
+            return f"Activity in {primary_process} - {primary_window[:50]}"
         except Exception as e:
             logger.error(f"Session summarization failed: {e}")
             # Fallback: basic summary
             return f"Activity in {primary_process} - {primary_window[:50]}"
+    
+    # =========================================================================
+    # Secondary Analysis (Phase 9: Deep Concept Extraction)
+    # =========================================================================
+    
+    SECONDARY_ANALYSIS_PROMPT = """Analyze this activity session and extract deeper insights.
+
+Session Summary: {summary}
+Primary Application: {process}
+Events: {event_count}
+Duration: {duration_minutes} minutes
+
+Extract the following in JSON format:
+{{
+  "technical_concepts": ["list of technical terms, tools, patterns mentioned"],
+  "workflow_pattern": "brief description of the workflow (e.g. 'research → implement → test')",
+  "concept_relationships": [["concept_a", "RELATION", "concept_b"], ...]
+}}
+
+RELATION types: USES, INTEGRATES_WITH, PART_OF, LEADS_TO, DEPENDS_ON
+
+Return ONLY valid JSON, no explanations."""
+
+    def secondary_analysis(
+        self,
+        summary: str,
+        process: str,
+        event_count: int,
+        duration_minutes: float
+    ) -> Optional[dict]:
+        """
+        Secondary LLM pass for deeper concept extraction.
+        
+        Args:
+            summary: Primary session summary.
+            process: Main application used.
+            event_count: Number of events in session.
+            duration_minutes: Session duration.
+        
+        Returns:
+            Dict with technical_concepts, workflow_pattern, concept_relationships.
+            None on failure.
+        """
+        if not summary or len(summary) < 20:
+            return None
+        
+        prompt = self.SECONDARY_ANALYSIS_PROMPT.format(
+            summary=summary[:200],
+            process=process,
+            event_count=event_count,
+            duration_minutes=duration_minutes
+        )
+        
+        try:
+            payload = {
+                "model": self.model,
+                "prompt": prompt,
+                "stream": False,
+                "format": "json",
+                "options": {
+                    "temperature": 0.2,  # Low for structured output
+                    "num_predict": 300
+                }
+            }
+            
+            response = self._client.post(
+                f"{self.ollama_host}/api/generate",
+                json=payload,
+                timeout=45.0
+            )
+            response.raise_for_status()
+            
+            raw = response.json().get("response", "")
+            
+            # Parse JSON from response
+            try:
+                result = json.loads(raw)
+                logger.debug(f"Secondary analysis: {len(result.get('technical_concepts', []))} concepts extracted")
+                return result
+            except json.JSONDecodeError:
+                logger.warning("Secondary analysis returned invalid JSON")
+                return None
+            
+        except httpx.TimeoutException:
+            logger.warning("Secondary analysis timed out")
+            return None
+        except Exception as e:
+            logger.debug(f"Secondary analysis failed: {e}")
+            return None
     
     def __del__(self):
         """Cleanup HTTP client on deletion."""

@@ -110,10 +110,10 @@ class TestDatabaseProvider(unittest.TestCase):
         async def run_test():
             await self.db.connect()
 
-            # Проверяем journal_mode
+            # Проверяем journal_mode (DELETE for Windows+Docker compatibility)
             cursor = await self.db._connection.execute("PRAGMA journal_mode")
             result = await cursor.fetchone()
-            self.assertEqual(result[0], "wal")
+            self.assertEqual(result[0], "delete")
 
             # Проверяем synchronous
             cursor = await self.db._connection.execute("PRAGMA synchronous")

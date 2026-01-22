@@ -21,6 +21,7 @@ type LogEntry struct {
 	InputIdleMs    int64   // Time of inactivity in milliseconds
 	InputIntensity float32 // Calculated input intensity (0.0 to 1.0)
 	ScreenshotPath string  // Path to captured screenshot
+	ScreenshotData []byte  // In-memory screenshot data (JPEG)
 }
 
 // BufferConfig holds configuration for the buffer behavior.
@@ -33,7 +34,7 @@ type BufferConfig struct {
 // DefaultConfig returns sensible defaults for the buffer.
 func DefaultConfig() BufferConfig {
 	return BufferConfig{
-		Capacity:      500, // Flush when 500 entries accumulated
+		Capacity:      100, // Flush when 100 entries accumulated
 		FlushTimeout:  5 * time.Minute,
 		IdleThreshold: 60 * time.Second,
 	}
@@ -122,7 +123,8 @@ func (b *Buffer) Size() int {
 			len(entry.ProcessName) +
 			len(entry.ProcessName) +
 			len(entry.WindowTitle) +
-			len(entry.ScreenshotPath)
+			len(entry.ScreenshotPath) +
+			len(entry.ScreenshotData)
 	}
 	return size
 }

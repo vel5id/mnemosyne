@@ -44,7 +44,8 @@ class Session:
     
     @property
     def duration_seconds(self) -> int:
-        return self.end_time - self.start_time
+        # Ensure duration is never negative (guard against clock skew)
+        return max(0, self.end_time - self.start_time)
     
     @property
     def event_count(self) -> int:

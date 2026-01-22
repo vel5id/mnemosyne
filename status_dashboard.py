@@ -188,28 +188,225 @@ async def get_redis_stats() -> dict:
     except Exception as e:
         return {"status": "disconnected", "error": str(e), "queue_depth": 0, "pending": 0}
 
-async def get_detailed_db_stats() -> dict:
-    """Get detailed breakdowns."""
-    if db is None: return {}
-    return await db.get_detailed_analytics()
-
-
 async def check_ollama_status(host: str, name: str) -> dict:
-    """Check Ollama server status."""
+    """Check Ollama instance status."""
     try:
-        async with httpx.AsyncClient(timeout=5.0) as client:
-            response = await client.get(f"{host}/api/tags")
-            if response.status_code == 200:
-                data = response.json()
-                models = [m["name"] for m in data.get("models", [])]
-                return {"status": "online", "models": models, "host": host}
-            else:
-                return {"status": "error", "models": [], "host": host}
-    except httpx.ConnectError:
-        return {"status": "offline", "models": [], "host": host}
-    except Exception as e:
-        return {"status": f"error: {str(e)}", "models": [], "host": host}
+        async with httpx.AsyncClient(timeout=1.0) as client:
+            resp = await client.get(f"{host}/api/tags")
+            if resp.status_code == 200:
+                models = resp.json().get('models', [])
+                return {
+                    "status": "online",
+                    "model_count": len(models),
+                    "models": [m['name'] for m in models]
+                }
+    except Exception:
+        pass
+    return {"status": "offline", "model_count": 0, "models": []}
 
+async def get_detailed_db_stats() -> dict:
+    """Get detailed breakdowns from SQLite."""
+    if db is None:
+        return {}
+    try:
+        counts = {}
+        # Use the provider's internal connection
+        conn = db._connection
+        if conn is None:
+            return {}
+        
+        # VLM events (has vlm_description in context_enrichment)
+        try:
+            async with conn.execute(
+                "SELECT COUNT(*) FROM context_enrichment WHERE vlm_description IS NOT NULL"
+            ) as c:
+                counts['vlm_events'] = (await c.fetchone())[0]
+        except Exception:
+            counts['vlm_events'] = 0
+        
+        # LLM events (has user_intent in context_enrichment)
+        try:
+            async with conn.execute(
+                "SELECT COUNT(*) FROM context_enrichment WHERE user_intent IS NOT NULL"
+            ) as c:
+                counts['llm_events'] = (await c.fetchone())[0]
+        except Exception:
+            counts['llm_events'] = 0
+        
+        # Screenshot events (has screenshot_path in raw_events)
+        try:
+            async with conn.execute(
+                "SELECT COUNT(*) FROM raw_events WHERE screenshot_path IS NOT NULL AND screenshot_path != ''"
+            ) as c:
+                counts['screenshot_events'] = (await c.fetchone())[0]
+        except Exception:
+            counts['screenshot_events'] = 0
+        
+        # Telemetry events (total raw)
+        try:
+            async with conn.execute("SELECT COUNT(*) FROM raw_events") as c:
+                counts['telemetry_events'] = (await c.fetchone())[0]
+        except Exception:
+            counts['telemetry_events'] = 0
+        
+        return counts
+        
+    except Exception as e:
+        logger.error(f"Analytics error: {e}")
+        return {}
+
+async def get_recent_sessions_stats() -> list:
+    """Get recent sessions."""
+    if db is None:
+        return []
+    try:
+        sessions = await db.get_recent_sessions(limit=5)
+        # Format timestamps with safety checks
+        for s in sessions:
+            try:
+                ts = s.get('start_time', 0)
+                if ts is None:
+                    ts = 0
+                # Handle milliseconds (if > year 3000 in seconds, assume ms)
+                if ts > 32503680000:
+                    ts = ts / 1000
+                s['time_ago'] = datetime.fromtimestamp(ts).strftime('%H:%M')
+            except (OSError, ValueError, OverflowError):
+                s['time_ago'] = '--:--'
+            
+            dur = s.get('duration_seconds', 0) or 0
+            s['duration'] = f"{dur // 60}m"
+        return sessions
+    except Exception as e:
+        logger.error(f"Error getting sessions: {e}")
+        return []
+
+
+
+
+
+@app.get("/api/health")
+async def health_check():
+    """Simple health check endpoint."""
+    return {"status": "ok", "service": "mnemosyne-dashboard"}
+
+
+@app.get("/", response_class=HTMLResponse)
+async def dashboard():
+    """Serve the dashboard HTML from external template."""
+    template_path = Path(__file__).parent / "templates" / "dashboard.html"
+    
+    if not template_path.exists():
+        logger.error(f"Template not found: {template_path}")
+        return HTMLResponse(
+            content="<h1>Error: Dashboard template not found</h1>",
+            status_code=500
+        )
+    
+    html = template_path.read_text(encoding="utf-8")
+    return HTMLResponse(content=html)
+
+async def get_rag_stats() -> dict:
+    """Get Knowledge Graph statistics with detailed breakdown."""
+    try:
+        graph_path = Path(DB_PATH).parent / "knowledge_graph.json"
+        if not graph_path.exists():
+            return {"nodes": 0, "edges": 0, "last_updated": "Never", "breakdown": {}, "concepts": [], "applications": []}
+        
+        import json
+        with open(graph_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        nodes = data.get("nodes", [])
+        edges = data.get("links", [])
+        
+        # Breakdown by type
+        breakdown = {}
+        concepts = []
+        applications = []
+        sessions_with_summary = []
+        
+        for node in nodes:
+            node_type = node.get("type", "Unknown")
+            breakdown[node_type] = breakdown.get(node_type, 0) + 1
+            
+            if node_type == "Concept":
+                concept_id = node.get("id", "")
+                if concept_id.startswith("concept:"):
+                    concepts.append(concept_id.replace("concept:", ""))
+            elif node_type == "Application":
+                app_id = node.get("id", "")
+                if app_id.startswith("app:"):
+                    applications.append(app_id.replace("app:", ""))
+            elif node_type == "Session":
+                summary = node.get("summary", "")
+                if summary and len(summary) > 10:
+                    sessions_with_summary.append({
+                        "id": node.get("id", "").replace("session:", "")[:8],
+                        "summary": summary[:100]
+                    })
+        
+        # Extract recent Event nodes (new)
+        recent_events = []
+        for node in nodes:
+            if node.get("type") == "Event":
+                event_id = node.get("id", "")
+                recent_events.append({
+                    "id": event_id.split(":")[-1] if ":" in event_id else event_id,
+                    "process": node.get("process", "unknown"),
+                    "window": node.get("window", "")[:30],
+                    "intent": node.get("intent", "")[:60]
+                })
+        
+        # Sort by id (most recent first) and limit
+        recent_events = recent_events[-10:][::-1]
+        
+        return {
+            "nodes": len(nodes),
+            "edges": len(edges),
+            "last_updated": datetime.fromtimestamp(graph_path.stat().st_mtime).strftime('%H:%M:%S'),
+            "breakdown": breakdown,
+            "concepts": concepts[:20],  # Top 20 concepts
+            "applications": applications[:10],
+            "sessions_with_summary": sessions_with_summary[:5],  # Last 5 sessions with summaries
+            "recent_events": recent_events  # New: Event-level details
+        }
+    except Exception as e:
+        logger.debug(f"Error getting RAG stats: {e}")
+        return {"nodes": 0, "edges": 0, "last_updated": "Error", "breakdown": {}, "concepts": [], "applications": [], "recent_events": []}
+
+async def get_recent_logs(limit: int = 20) -> list:
+    """Fetch raw event log trail."""
+    if db is None:
+        return []
+    try:
+        conn = db._connection
+        if conn is None:
+            return []
+        
+        # Join raw_events with context_enrichment to get intents
+        query = """
+            SELECT e.id, e.timestamp_utc, e.process_name, e.window_title, c.user_intent
+            FROM raw_events e
+            LEFT JOIN context_enrichment c ON e.id = c.event_id
+            ORDER BY e.id DESC
+            LIMIT ?
+        """
+        async with conn.execute(query, (limit,)) as cursor:
+            rows = await cursor.fetchall()
+            return [
+                {
+                    "id": row[0],
+                    "time": row[1] or "",
+                    "process": row[2] or "Unknown",
+                    "window": row[3] or "",
+                    "intent": row[4] or "Processing..."
+                }
+                for row in rows
+            ]
+    except Exception as e:
+        logger.debug(f"Error fetching logs: {e}")
+        return []
 
 @app.get("/api/status")
 async def api_status():
@@ -218,6 +415,9 @@ async def api_status():
     database = await get_db_stats()
     analytics = await get_detailed_db_stats()
     redis_stats = await get_redis_stats()
+    sessions = await get_recent_sessions_stats()
+    logs = await get_recent_logs(20)
+    rag = await get_rag_stats()
     
     vlm = await check_ollama_status(OLLAMA_VLM_HOST, "VLM")
     llm = await check_ollama_status(OLLAMA_LLM_HOST, "LLM")
@@ -227,6 +427,9 @@ async def api_status():
         "system": system,
         "database": {**database, "analytics": analytics},
         "redis": redis_stats,
+        "sessions": sessions,
+        "logs": logs,
+        "rag": rag,
         "models": {
             "vlm": {
                 **vlm,
@@ -239,257 +442,6 @@ async def api_status():
             }
         }
     }
-
-
-@app.get("/api/health")
-async def health_check():
-    """Simple health check endpoint."""
-    return {"status": "ok", "service": "mnemosyne-dashboard"}
-
-
-@app.get("/", response_class=HTMLResponse)
-async def dashboard():
-    """Serve the dashboard HTML."""
-    html = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mnemosyne Observability</title>
-    <style>
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: #1a1a24;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.3);
-            --text-primary: #e4e4e7;
-            --text-secondary: #a1a1aa;
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --redis-color: #dc2626;
-            --sqlite-color: #0ea5e9;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 2rem;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, var(--accent), #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        
-        .card h2 {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .card h2 .icon { margin-right: 0.5rem; }
-        
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .metric:last-child { border-bottom: none; }
-        
-        .metric .label { color: var(--text-secondary); }
-        .metric .value { font-weight: 600; font-size: 1.1rem; }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        .status-online { background: var(--success); box-shadow: 0 0 8px var(--success); }
-        .status-offline { background: var(--error); box-shadow: 0 0 8px var(--error); }
-        
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: var(--bg-secondary);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        .breakdown-chart {
-            display: flex;
-            height: 20px;
-            width: 100%;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-        
-        .chart-segment {
-            height: 100%;
-            transition: width 0.5s ease;
-        }
-        
-        .legend {
-            display: flex;
-            gap: 1rem;
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .legend-item { display: flex; align-items: center; gap: 0.3rem; }
-        .legend-color { width: 8px; height: 8px; border-radius: 50%; }
-
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>🧠 Mnemosyne Observability</h1>
-        <p>Hyper-RAM (v4.0) Status</p>
-    </div>
-    
-    <div class="grid" id="dashboard">
-        <!-- Rendered via JS -->
-    </div>
-    
-    <script>
-        async function fetchStatus() {
-            try {
-                const response = await fetch('/api/status');
-                const data = await response.json();
-                renderDashboard(data);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        
-        function renderDashboard(data) {
-            const sys = data.system;
-            const db = data.database;
-            const redis = data.redis;
-            const analytics = db.analytics || {};
-            
-            // Calculate Pipeline Breakdown
-            const total = analytics.telemetry_events || 1;
-            const p_telemetry = ((analytics.telemetry_events || 0) / total * 100).toFixed(1);
-            const p_llm = ((analytics.llm_events || 0) / total * 100).toFixed(1);
-            const p_vlm = ((analytics.vlm_events || 0) / total * 100).toFixed(1);
-            const p_screen = ((analytics.screenshot_events || 0) / total * 100).toFixed(1);
-
-            document.getElementById('dashboard').innerHTML = `
-                <!-- System -->
-                <div class="card">
-                    <h2><span class="icon">💻</span> Resources</h2>
-                    <div class="metric"><span class="label">CPU</span><span class="value">${sys.cpu_percent}%</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${sys.cpu_percent}%"></div></div>
-                    <div class="metric"><span class="label">RAM</span><span class="value">${sys.ram_used_gb}/${sys.ram_total_gb} GB</span></div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${sys.ram_percent}%"></div></div>
-                </div>
-
-                <!-- Redis (Hot Layer) -->
-                <div class="card" style="border-top: 2px solid var(--redis-color)">
-                    <h2>
-                        <span class="status-indicator ${redis.status==='connected'?'status-online':'status-offline'}"></span>
-                        <span class="icon">🚀</span> Active Pipeline (Redis)
-                    </h2>
-                    <div class="metric"><span class="label">Status</span><span class="value">${redis.status}</span></div>
-                    <div class="metric"><span class="label">Host</span><span class="value">${redis.host || 'N/A'}</span></div>
-                    <div class="metric"><span class="label">Ingestion Queue</span><span class="value">${redis.queue_depth}</span></div>
-                    <div class="metric"><span class="label">Processing Lag</span><span class="value">${redis.pending}</span></div>
-                </div>
-
-                <!-- SQLite (Cold Layer) -->
-                <div class="card" style="border-top: 2px solid var(--sqlite-color)">
-                    <h2>
-                        <span class="status-indicator ${db.status==='connected'?'status-online':'status-offline'}"></span>
-                        <span class="icon">💾</span> Archive (SQLite)
-                    </h2>
-                    <div class="metric"><span class="label">Total Events</span><span class="value">${(db.total_events||0).toLocaleString()}</span></div>
-                    <div class="metric"><span class="label">Enriched</span><span class="value">${(db.enriched_events||0).toLocaleString()}</span></div>
-                    
-                    <div style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem">
-                         <div class="metric"><span class="label">LLM Context</span><span class="value">${analytics.llm_events || 0}</span></div>
-                         <div class="metric"><span class="label">VLM Analysis</span><span class="value">${analytics.vlm_events || 0}</span></div>
-                         <div class="metric"><span class="label">Screenshots</span><span class="value">${analytics.screenshot_events || 0}</span></div>
-                    </div>
-                </div>
-                
-                <!-- Content Breakdown -->
-                <div class="card">
-                     <h2><span class="icon">📊</span> Pipeline Efficiency</h2>
-                     <div class="metric"><span class="label">LLM Coverage</span><span class="value">${p_llm}%</span></div>
-                     <div class="metric"><span class="label">VLM Coverage</span><span class="value">${p_vlm}%</span></div>
-                     
-                     <div class="breakdown-chart">
-                        <div class="chart-segment" style="width: ${p_llm}%; background: #a855f7" title="LLM"></div>
-                        <div class="chart-segment" style="width: ${p_vlm}%; background: #ec4899" title="VLM"></div>
-                        <div class="chart-segment" style="width: ${100 - p_llm - p_vlm}%; background: #3b82f6" title="Raw"></div>
-                     </div>
-                     <div class="legend">
-                        <div class="legend-item"><div class="legend-color" style="background: #a855f7"></div>LLM</div>
-                        <div class="legend-item"><div class="legend-color" style="background: #ec4899"></div>VLM</div>
-                        <div class="legend-item"><div class="legend-color" style="background: #3b82f6"></div>Raw</div>
-                     </div>
-                </div>
-            `;
-        }
-        
-        // Loop
-        fetchStatus();
-        setInterval(fetchStatus, 2000); // 2s refresh for realtime redis feel
-    </script>
-</body>
-</html>
-"""
-    return HTMLResponse(content=html)
 
 
 if __name__ == "__main__":

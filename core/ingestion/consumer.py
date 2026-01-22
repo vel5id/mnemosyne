@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import List, Dict, Any, Tuple, Optional
+import base64
 import logging
 from core.dal.redis_provider import RedisProvider
 
@@ -60,8 +61,20 @@ class RedisConsumer:
                 total_intensity = sum(float(e.get('intensity', 0)) for e in events)
                 avg_intensity = total_intensity / len(events) if events else 0
                 
+                
                 # Collect Redis IDs for ACKing
                 redis_ids = [e['_redis_id'] for e in events]
+
+                # Check for ephemeral image data (prefer last one)
+                screenshot_data = None
+                for e in reversed(events):
+                    if 'image_data' in e:
+                        try:
+                            # Redis returns string, decode to bytes
+                            screenshot_data = base64.b64decode(e['image_data'])
+                            break
+                        except Exception:
+                            logger.warning(f"Failed to decode image data for group {proc}")
                 
                 result_groups.append({
                     "process_name": proc,
@@ -70,7 +83,8 @@ class RedisConsumer:
                     "first_seen": first_seen,
                     "last_seen": last_seen,
                     "avg_intensity": avg_intensity,
-                    "screenshot_path": None, # Future: get from message if available
+                    "screenshot_path": None, # Deprecated in v4.0 Ephemeral Mode
+                    "screenshot_data": screenshot_data, # Ephemeral data in RAM
                     "redis_ids": redis_ids   # Crucial for ACK
                 })
             except Exception as e:
